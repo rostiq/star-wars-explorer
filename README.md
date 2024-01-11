@@ -30,13 +30,6 @@ Navigate to the main page to explore a list of Star Wars characters.
 Use the filter options to refine the character list based on movies, name, gender, and mass.
 Click on a character to view detailed information on a separate page.
 
-## Tools
-Vite - fast and modern,
-React
-Redux
-React Router
-ANT Design
-
 ## UI
 Here are some reasons why i choose Ant Design for my projects:
 - good looking UI
