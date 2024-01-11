@@ -11,20 +11,20 @@ const { Header, Content } = Layout;
 const App = () => {
   return (
     <Provider store={store}>
-      <Layout className='layout'>
-        <Header>
-          <Logo />
-        </Header>
+      <Router>
+        <Layout className='layout'>
+          <Header>
+            <Logo />
+          </Header>
 
           <Content className='content'>
-              <Router>
-                <Routes>
-                  <Route path="/" element={<Main />} />
-                  <Route path="/characters/:id" element={<CharacterDetails />} />
-                </Routes>
-              </Router>
+            <Routes>
+              <Route path="/" element={<Main />} />
+              <Route path="/characters/:id" element={<CharacterDetails />} />
+            </Routes>
           </Content>
-      </Layout>
+        </Layout>
+      </Router>
     </Provider>
   );
 };

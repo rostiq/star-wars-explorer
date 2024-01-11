@@ -92,7 +92,12 @@ export const CharacterDetails = () => {
               <Typography.Title level={4}>{label}</Typography.Title>
               {data.map((movie, index)=>{
                 return (
-                  <Descriptions key={movie.episode_id} title={`No. ${index+1}`} column={6}>
+                  <Descriptions key={movie.episode_id} title={`No. ${index+1}`} grid={{ gutter: 16, xs: 1,
+                    sm: 1,
+                    md: 2,
+                    lg: 2,
+                    xl: 3,
+                    xxl: 3, }}>
                 {generateDescriptionsItems(movie)}
               </Descriptions>
                 )
