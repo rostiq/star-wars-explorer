@@ -39,9 +39,9 @@ export const Filter = () => {
   }
 
   return (
-    <Space wrap >
+    <Space wrap>
       <Select
-        style={{ width: 240 }}
+        style={{ width: 180 }}
         onChange={onRadioChange}
         options={moviesOptions}
         value={filters?.movie}
@@ -60,7 +60,7 @@ export const Filter = () => {
       <Input placeholder={FILTER_TYPES.massMin.label} value={filters?.massMin} onChange={(e) => onFiltersChange(FILTER_TYPES.massMin.key, e.target.value)} />
       <Input placeholder={FILTER_TYPES.massMax.label} value={filters?.massMax} onChange={(e) => onFiltersChange(FILTER_TYPES.massMax.key, e.target.value)} />
 
-      <Button onClick={handleClearFilters}>Clear Filters</Button>
+      <Button type="primary" onClick={handleClearFilters}>Clear Filters</Button>
     </Space>
   );
 }
