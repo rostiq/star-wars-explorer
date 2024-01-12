@@ -26,7 +26,7 @@ export const Filter = () => {
     if (!movies?.length) {
       fetchMovies();
     }
-  }, [charactersLength, fetchCharacters, fetchMovies, movies?.length])
+  }, []);
 
   const onFiltersChange = (key, value) => {
     dispatch(setFilters({ [key]: value }));

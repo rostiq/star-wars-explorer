@@ -10,7 +10,7 @@ import {
   selectCharacters,
   setCharacterDetails,
 } from "../redux";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 const BASE_URL = "https://swapi.dev/api";
 
@@ -22,40 +22,16 @@ export const useSwapi = () => {
   const [isLoadingStarships, setIsLoadingStarships] = useState(false);
   const [isLoadingSpecies, setIsLoadingSpecies] = useState(false);
 
-  const handleUpdateError = useCallback(
-    () => {
-        dispatch(updateError("Something went wrong. Please contact support"));
-    },
-    [dispatch]
-  );
-
-  const fetchNextPage = useCallback(
-    async (url) => {
-      try {
-        const response = await axios.get(url);
-        dispatch(
-          setCharacters((prevCharacters) => [
-            ...prevCharacters,
-            ...response.data.results,
-          ])
-        );
-
-        if (response.data.next) {
-          setNextCharacterFetch(response.data.next);
-        }
-      } catch (error) {
-        handleUpdateError(error);
-      }
-    },
-    [dispatch, handleUpdateError]
-  );
-
   useEffect(() => {
     if (nextCharacterFetch) {
       fetchNextPage(nextCharacterFetch);
     }
-  }, [fetchNextPage, nextCharacterFetch]);
+  }, [nextCharacterFetch]);
 
+  const handleUpdateError = (error) => {
+    dispatch(updateError("Something went wrong. Please contact support"));
+    console.log(error);
+  };
   const fetchCharacterDetails = async (id) => {
     try {
       const response = await axios.get(`${BASE_URL}/people/${id}`);
@@ -69,6 +45,18 @@ export const useSwapi = () => {
     try {
       dispatch(updateRequest());
       const response = await axios.get(`${BASE_URL}/people/`);
+      dispatch(setCharacters([...characters, ...response.data.results]));
+      if (response.data.next) {
+        setNextCharacterFetch(response.data.next);
+      }
+    } catch (error) {
+      handleUpdateError(error);
+    }
+  };
+
+  const fetchNextPage = async (url) => {
+    try {
+      const response = await axios.get(url);
       dispatch(setCharacters([...characters, ...response.data.results]));
       if (response.data.next) {
         setNextCharacterFetch(response.data.next);

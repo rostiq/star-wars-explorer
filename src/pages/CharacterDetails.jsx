@@ -22,7 +22,7 @@ export const CharacterDetails = () => {
 
   useEffect(() => {
     dispatch(setCharacterId(Number(id)));
-  }, [dispatch, id])
+  }, [id])
 
   if (!characterDetails?.name) {
     fetchCharacterDetails(Number(id));
