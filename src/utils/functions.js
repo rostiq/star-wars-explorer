@@ -1,3 +1,5 @@
+import { gendersExclude } from "./constants";
+
 export const idFromUrl = (url) => {
   const urlParts = url.split("/");
   const id = urlParts[urlParts.length - 2];
@@ -20,44 +22,9 @@ export const getDescriptionMetrics = (key) => {
   return key === "height" ? " cm" : key === "mass" ? " kg" : "";
 };
 
-export const FILTER_TYPES = {
-  name: {
-    label: "Name",
-    key: "name",
-  },
-  gender: {
-    label: "Gender",
-    key: "gender",
-  },
-  movie: {
-    label: "Movie",
-    key: "movie",
-  },
-  massMin: {
-    label: "Min weight",
-    key: "massMin",
-  },
-  massMax: {
-    label: "Max weight",
-    key: "massMax",
-  },
-  height: {
-    label: "Height",
-    key: "height",
-  },
-};
-
-export const GENDER_TYPES = {
-  male: {
-    label: "Male",
-    key: "male",
-  },
-  female: {
-    label: "Female",
-    key: "female",
-  },
-  other: {
-    label: "Other",
-    key: "other",
-  },
+export const getCorrectGender = (gender) => {
+  if (gendersExclude.includes(gender)) {
+    return "other";
+  }
+  return gender;
 };

@@ -3,6 +3,7 @@ import { Provider } from 'react-redux';
 import { Layout } from 'antd';
 
 import { store } from './redux/store';
+import { ROUTES } from './utils/constants';
 import { Main, CharacterDetails } from './pages';
 import { Logo } from './components';
 
@@ -19,8 +20,8 @@ const App = () => {
 
           <Content className='content'>
             <Routes>
-              <Route path="/" element={<Main />} />
-              <Route path="/characters/:id" element={<CharacterDetails />} />
+              <Route path={ROUTES.home} element={<Main />} />
+              <Route path={ROUTES.characters} element={<CharacterDetails />} />
             </Routes>
           </Content>
         </Layout>

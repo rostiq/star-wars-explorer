@@ -2,11 +2,12 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { Button, Descriptions, Row, Spin, Typography } from 'antd';
+import { Button, Col, Descriptions, Row, Spin, Typography } from 'antd';
 
-import { selectCharacterDetails, setCharacterId, selectMovies, selectStarships, selectSpecies } from '../redux/charactersSlice';
+import { selectCharacterDetails, setCharacterId, selectMovies, selectStarships, selectSpecies } from '../redux';
 import { useSwapi } from '../hooks/useSwapi';
-import { fixLabel, getDescriptionMetrics, getDescriptionValue } from '../utils';
+import { fixLabel, getDescriptionMetrics, getDescriptionValue } from '../utils/functions';
+import { descriptionExclude, gridResponsive } from '../utils/constants';
 
 export const CharacterDetails = () => {
 
@@ -21,7 +22,7 @@ export const CharacterDetails = () => {
 
   useEffect(() => {
     dispatch(setCharacterId(Number(id)));
-  }, [id])
+  }, [dispatch, id])
 
   if (!characterDetails?.name) {
     fetchCharacterDetails(Number(id));
@@ -36,6 +37,7 @@ export const CharacterDetails = () => {
 
   const enhancedInfoData = [
     {
+      id: 1,
       label: 'Films',
       value: films.length,
       onClick: fetchMovies,
@@ -44,6 +46,7 @@ export const CharacterDetails = () => {
       data: moviesWithCharacter,
     },
     {
+      id: 2,
       label: 'Starships',
       value: starships.length,
       onClick: fetchStarships,
@@ -52,6 +55,7 @@ export const CharacterDetails = () => {
       data: starshipsWithCharacter,
     },
     {
+      id: 3,
       label: 'Species',
       value: species.length,
       onClick: fetchSpecies,
@@ -63,7 +67,7 @@ export const CharacterDetails = () => {
 
   const generateDescriptionsItems = (data) => {
     return Object.entries(data).map(([key, value]) => {
-      if (key === 'homeworld' || key === 'url' || key === 'opening_crawl') {
+      if (descriptionExclude.includes(key)) {
         return;
       }
       return (
@@ -83,27 +87,29 @@ export const CharacterDetails = () => {
 
       <Row gutter={16} >
 
-        {enhancedInfoData.map(({ label, value, onClick, isButton, loading, data }) => {
+        {enhancedInfoData.map(({ id, label, value, onClick, isButton, loading, data }) => {
+
           if (!value) {
             return null;
           }
+
           return (
-            <Row key={label} span={12} className='info' >
+            <Row key={id} span={12} className='info' >
               <Typography.Title level={4}>{label}</Typography.Title>
-              {data.map((movie, index)=>{
+              {data.map((movie) => {
+                const { episode_id, opening_crawl, title } = movie
                 return (
-                  <Descriptions key={movie.episode_id} title={`No. ${index+1}`} grid={{ gutter: 16, xs: 1,
-                    sm: 1,
-                    md: 2,
-                    lg: 2,
-                    xl: 3,
-                    xxl: 3, }}>
-                {generateDescriptionsItems(movie)}
-              </Descriptions>
+                  <Col key={episode_id}>
+                    <Typography.Title level={5}>{title}</Typography.Title>
+                    <Typography.Text>{opening_crawl}</Typography.Text>
+                    <Descriptions grid={gridResponsive}>
+                      {generateDescriptionsItems(movie)}
+                    </Descriptions>
+                  </Col>
                 )
               })}
               {isButton && <Button loading={loading} size='small' type="primary" onClick={onClick}>
-                {loading? '' : '+'} 
+                {loading ? '' : '+'}
               </Button>}
             </Row>
           )

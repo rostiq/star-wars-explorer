@@ -3,8 +3,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Select, Input, Radio, Button, Space } from 'antd';
 
 import { useSwapi } from '../hooks/useSwapi';
-import { selectCharactersLength, selectFilters, selectMovies, setFilters, clearFilters } from '../redux/charactersSlice';
-import { FILTER_TYPES, GENDER_TYPES } from '../utils';
+import { selectCharactersLength, selectFilters, selectMovies, setFilters, clearFilters } from '../redux';
+import { FILTER_TYPES, GENDER_TYPES } from '../utils/constants';
+
+const selectStyles = { width: 180 };
 
 export const Filter = () => {
 
@@ -20,28 +22,48 @@ export const Filter = () => {
   useEffect(() => {
     if (!charactersLength) {
       fetchCharacters();
-    } 
+    }
     if (!movies?.length) {
       fetchMovies();
     }
-  }, [])
+  }, [charactersLength, fetchCharacters, fetchMovies, movies?.length])
 
   const onFiltersChange = (key, value) => {
-    dispatch(setFilters({[key]: value }));
+    dispatch(setFilters({ [key]: value }));
   }
 
   const handleClearFilters = () => {
     dispatch(clearFilters());
   }
-
   const onRadioChange = (value) => {
-  onFiltersChange(FILTER_TYPES.movie.key, value)
+    onFiltersChange(FILTER_TYPES.movie.key, value)
+  }
+
+
+  const onNameChange = (e) => {
+    const value = e.target.value;
+    onFiltersChange(FILTER_TYPES.name.key, value);
+  }
+
+  const onGenderChange = (e) => {
+    const value = e.target.value;
+    onFiltersChange(FILTER_TYPES.gender.key, value);
+  }
+
+  const onMassMinChange = (e) => {
+    const value = e.target.value;
+    onFiltersChange(FILTER_TYPES.massMin.key, value);
+  }
+
+  const onMassMaxChange = (e) => {
+    const value = e.target.value;
+    onFiltersChange(FILTER_TYPES.massMax.key, value);
   }
 
   return (
     <Space wrap>
       <Select
-        style={{ width: 180 }}
+        style={selectStyles}
         onChange={onRadioChange}
         options={moviesOptions}
         value={filters?.movie}
@@ -49,16 +71,21 @@ export const Filter = () => {
         placeholder={FILTER_TYPES.movie.label}
       />
 
-      <Input placeholder={FILTER_TYPES.name.label} value={filters?.name} onChange={(e) => onFiltersChange(FILTER_TYPES.name.key, e.target.value)} />
+      <Input placeholder={FILTER_TYPES.name.label} value={filters?.name} onChange={onNameChange} />
 
-      <Radio.Group onChange={(e) => onFiltersChange(FILTER_TYPES.gender.key, e.target.value)} value={filters?.gender}>
-        <Radio value={GENDER_TYPES.male.key}>{GENDER_TYPES.male.label}</Radio>
-        <Radio value={GENDER_TYPES.female.key}>{GENDER_TYPES.female.label}</Radio>
-        <Radio value={GENDER_TYPES.other.key}>{GENDER_TYPES.other.label}</Radio>
+      <Radio.Group onChange={onGenderChange} value={filters?.gender}>
+        {GENDER_TYPES.map((gender) => {
+          const { key, label } = gender;
+          return (
+            <Radio key={key} value={key}>
+              {label}
+            </Radio>
+          );
+        })}
       </Radio.Group>
 
-      <Input placeholder={FILTER_TYPES.massMin.label} value={filters?.massMin} onChange={(e) => onFiltersChange(FILTER_TYPES.massMin.key, e.target.value)} />
-      <Input placeholder={FILTER_TYPES.massMax.label} value={filters?.massMax} onChange={(e) => onFiltersChange(FILTER_TYPES.massMax.key, e.target.value)} />
+      <Input placeholder={FILTER_TYPES.massMin.label} value={filters?.massMin} onChange={onMassMinChange} />
+      <Input placeholder={FILTER_TYPES.massMax.label} value={filters?.massMax} onChange={onMassMaxChange} />
 
       <Button type="primary" onClick={handleClearFilters}>Clear Filters</Button>
     </Space>

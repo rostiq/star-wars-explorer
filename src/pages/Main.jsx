@@ -3,10 +3,15 @@ import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { Card, List, Col, Row, Statistic, Typography, Space } from 'antd';
 
-import { selectFilteredCharacters, selectLoading } from '../redux/charactersSlice';
+import { selectFilteredCharacters, selectLoading } from '../redux';
 import { Filter } from '../components';
+import { NAVIGATE, gridResponsive } from '../utils/constants';
 
 const { Text } = Typography;
+
+const paginationStyles = { position: 'bottom', align: 'center', pageSize: 9 };
+
+const pageStyles = { width: '100%' };
 
 export const Main = () => {
 
@@ -14,24 +19,19 @@ export const Main = () => {
   const loading = useSelector(selectLoading);
 
   return (
-    <Space direction="vertical" >
+    <Space direction="vertical" style={pageStyles}>
       <Text>Choose character:</Text>
 
       <Filter />
 
       <List
-        grid={{ gutter: 16, xs: 1,
-          sm: 1,
-          md: 2,
-          lg: 2,
-          xl: 3,
-          xxl: 3, }}
+        grid={gridResponsive}
         dataSource={characters}
         loading={loading}
-        pagination={{ position: 'bottom', align: 'center', pageSize: 9 }}
+        pagination={paginationStyles}
         renderItem={(item) => (
           <List.Item key={item.id}>
-            <Link to={`/characters/${item.id}`}>
+            <Link to={`${NAVIGATE.characters}${item.id}`}>
               <Card title={item.name}>
                 <Row gutter={12}>
                   <Col span={12}>
