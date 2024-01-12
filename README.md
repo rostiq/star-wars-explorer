@@ -12,7 +12,7 @@ Star Wars Character Explorer is a React application that allows users to explore
 ## Getting started
 Clone the repository and open in your IDE:
 
-`git clone https://github.com/your-username/star-wars-character-explorer.git`
+`git clone https://github.com/rostiq/star-wars-explorer.git`
 
 Install dependencies:
 
